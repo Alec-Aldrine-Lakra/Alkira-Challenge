@@ -5,8 +5,8 @@ import { DebounceInput } from "react-debounce-input";
 import { useGetFetch } from "./services/fetch.service";
 import Table from "react-bootstrap/Table";
 import { PaginationTeam } from "./components/paginationTeam/paginationTeam";
-import Card from "react-bootstrap/Card";
 import { GameData } from "./components/gameData/gameData";
+import CustomDialog from "./components/customDialog/customDialog";
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -18,6 +18,8 @@ function App() {
   });
   const [gameData, setGameData] = useState({});
   const { data: result } = useGetFetch("teams");
+
+  const [showDialog, setShowDialog] = useState(false);
 
   useEffect(() => {
     if (typeof searchText === "string" && searchText.trim().length) {
@@ -44,6 +46,7 @@ function App() {
         data.total_count = result.meta.total_count;
         setGameData(data);
         setNameDetails({name, full_name});
+        setShowDialog(true);
       })
       .catch((err) => {
         console.error(err);
@@ -97,7 +100,15 @@ function App() {
           </tbody>
         </Table>
         <PaginationTeam metaData={teamMetaData} />
-        <GameData nameDetails={nameDetails} gameData={gameData} />
+        <CustomDialog
+          direction="right"
+					isShowing={showDialog}
+					hide={()=>{
+            setShowDialog(!showDialog);
+          }}
+        >
+          <GameData nameDetails={nameDetails} gameData={gameData} />
+        </CustomDialog>
       </div>
     </div>
   );
