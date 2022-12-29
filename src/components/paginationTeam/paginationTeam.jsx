@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
-export function PaginationTeam({ metaData }) {
+export function PaginationTeam({ metaData, setCurrentPage }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    let arr = [];
-    for (let number = 1; number <= (metaData.total_pages ?? 1); number++) {
+    const arr = [];
+    for (let number = 0; number < metaData.total_pages; number++) {
       arr.push(
-        <Pagination.Item key={number} active={number === (metaData.current_page ?? 1)}>
+        <Pagination.Item key={number} active={number === metaData.current_page} onClick={()=>{
+          setCurrentPage(number)
+        }}>
           {number}
         </Pagination.Item>
       );
     }
     setItems(arr);
-  }, [metaData]);
+  }, [metaData, setCurrentPage]);
 
   return <Pagination>{items}</Pagination>;
 }

@@ -7,6 +7,7 @@ import Table from "react-bootstrap/Table";
 import { PaginationTeam } from "./components/paginationTeam/paginationTeam";
 import { GameData } from "./components/gameData/gameData";
 import CustomDialog from "./components/customDialog/customDialog";
+import { pageSize } from "./constants/index.constants";
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -14,10 +15,12 @@ function App() {
   const [teamMetaData, setTeamMetaData] = useState({});
   const [nameDetails, setNameDetails] = useState({
     name: "",
-    full_name: ""
+    full_name: "",
   });
   const [gameData, setGameData] = useState({});
   const { data: result } = useGetFetch("teams");
+
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -27,12 +30,20 @@ function App() {
     }
   }, [searchText]);
 
+  useEffect(()=>{
+    document.title = "NBA Teams";
+  }, []);
+
   useEffect(() => {
     if (result && typeof result === "object") {
-      setTeamList(result.data || []);
-      setTeamMetaData(result.meta || {});
+      setTeamList(result.data.slice(currentIndex, currentIndex + pageSize));
+      const total_pages = Math.ceil(result.data.length / pageSize);
+      setTeamMetaData({
+        total_pages,
+        current_page: (currentIndex / 7)
+      });
     }
-  }, [result]);
+  }, [currentIndex, result]);
 
   const fetchGameDetails = (id, name, full_name) => {
     fetch(
@@ -45,7 +56,7 @@ function App() {
         const data = result.data[0] || {};
         data.total_count = result.meta.total_count;
         setGameData(data);
-        setNameDetails({name, full_name});
+        setNameDetails({ name, full_name });
         setShowDialog(true);
       })
       .catch((err) => {
@@ -55,7 +66,9 @@ function App() {
 
   return (
     <div className="App">
-      <header>NBA Teams</header>
+      <header>
+        <h1>NBA Teams</h1>
+      </header>
       <form>
         <DebounceInput
           type="text"
@@ -67,49 +80,61 @@ function App() {
           debounceTimeout={500}
         />
       </form>
-      <div className="result-container">
-        <Table bordered hover responsive>
-          <thead>
-            <tr>
-              <th>Team Name</th>
-              <th>City</th>
-              <th>Abbreviation</th>
-              <th>Conference</th>
-              <th>Division</th>
-            </tr>
-          </thead>
-          <tbody>
-            {teamList.map(
-              ({ id, name, city, full_name, abbreviation, conference, division }) => {
-                return (
-                  <tr
-                    key={id}
-                    onClick={() => {
-                      fetchGameDetails(id, name, full_name);
-                    }}
-                  >
-                    <td>{name}</td>
-                    <td>{city}</td>
-                    <td>{abbreviation}</td>
-                    <td>{conference}</td>
-                    <td>{division}</td>
-                  </tr>
-                );
-              }
-            )}
-          </tbody>
-        </Table>
-        <PaginationTeam metaData={teamMetaData} />
-        <CustomDialog
-          direction="right"
-					isShowing={showDialog}
-					hide={()=>{
-            setShowDialog(!showDialog);
-          }}
-        >
-          <GameData nameDetails={nameDetails} gameData={gameData} />
-        </CustomDialog>
-      </div>
+      {teamList.length > 0 && (
+        <div className="result-container">
+          <Table bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Team Name</th>
+                <th>City</th>
+                <th>Abbreviation</th>
+                <th>Conference</th>
+                <th>Division</th>
+              </tr>
+            </thead>
+            <tbody>
+              {teamList.map(
+                ({
+                  id,
+                  name,
+                  city,
+                  full_name,
+                  abbreviation,
+                  conference,
+                  division,
+                }) => {
+                  return (
+                    <tr
+                      key={id}
+                      onClick={() => {
+                        fetchGameDetails(id, name, full_name);
+                      }}
+                    >
+                      <td>{name}</td>
+                      <td>{city}</td>
+                      <td>{abbreviation}</td>
+                      <td>{conference}</td>
+                      <td>{division}</td>
+                    </tr>
+                  );
+                }
+              )}
+            </tbody>
+          </Table>
+          <PaginationTeam metaData={teamMetaData} setCurrentPage={(index)=>{
+              setCurrentIndex(index * pageSize);
+          }} />
+          <CustomDialog
+            direction="right"
+            isShowing={showDialog}
+            hide={() => {
+              setShowDialog(!showDialog);
+            }}
+          >
+            <GameData nameDetails={nameDetails} gameData={gameData} />
+          </CustomDialog>
+        </div>
+      )}
     </div>
   );
 }
