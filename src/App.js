@@ -19,6 +19,8 @@ function App() {
     name: "",
     full_name: "",
   });
+  const [sortMetaData, setSortMetaData] = useState({});
+
   const [gameData, setGameData] = useState({});
   const { data: result } = useGetFetch("teams");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -74,6 +76,37 @@ function App() {
       });
   };
 
+  const sortByColumn = (e)=>{
+	const key = e.target.id;
+	let isAscending = false;
+	if(sortMetaData[key]) {
+		if(sortMetaData[key].isAsc) {
+			result.data = result.data.sort((team1, team2) => {
+				return team1[key].localeCompare(team2[key]);
+			});
+			isAscending = false; // setting in descending
+		}  else {
+			result.data = result.data.sort((team1, team2) => {
+				return team2[key].localeCompare(team1[key]);
+			});
+			isAscending = true;
+		}
+	} else {
+		result.data = result.data.sort((team1, team2) => {
+			return team1[key].localeCompare(team2[key]);
+		});
+		isAscending = true;
+	}
+	setTeamList(result.data.slice(currentIndex, currentIndex + pageSize));
+	setSortMetaData({
+		...sortMetaData,
+		[key]: {
+			isAsc: isAscending
+		}
+	})
+
+  }
+
   return (
     <div className="App">
       <header>
@@ -99,12 +132,12 @@ function App() {
         <div className="result-container">
           <Table hover responsive>
             <thead>
-              <tr>
-                <th>Team Name</th>
-                <th>City</th>
-                <th>Abbreviation</th>
-                <th>Conference</th>
-                <th>Division</th>
+              <tr onClick={sortByColumn}>
+                <th id="name">Team Name</th>
+                <th id="city">City</th>
+                <th id="abbreviation">Abbreviation</th>
+                <th id="conference">Conference</th>
+                <th id="division">Division</th>
               </tr>
             </thead>
             <tbody>
