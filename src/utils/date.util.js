@@ -46,7 +46,7 @@ export const formatDate = (dateString) => {
   if (typeof dateString === "string" || typeof dateString === "number") {
     try {
       const d = new Date(dateString);
-      return getMonth(d) + "-" + getDate(d) + "-" + getFullYear(d);
+      return getFullYear(d) + "-" + getMonth(d) + "-" + getDate(d);
     } catch (err) {
       return "";
     }

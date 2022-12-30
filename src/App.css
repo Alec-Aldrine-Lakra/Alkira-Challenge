@@ -6,18 +6,25 @@
 	display: flex;
 	justify-content: flex-end;
 }
-thead {
-	color: white;
-	background-color: blue;
-}
-
-tbody > tr {
-	cursor: pointer;
-}
 
 .result-container {
 	width: 80%;
 	margin-top: 20px;
+}
+
+.result-container thead {
+	color: white;
+	background-color: blue;
+}
+
+.result-container tbody > tr {
+	cursor: pointer;
+	background-color: #F8FBFD;
+}
+
+
+.result-container tbody > tr.active {
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), #F8FBFD;
 }
 
 header > h1 {
@@ -45,10 +52,11 @@ form {
 	position: relative;
 }
 
-form span {
+form label {
 	position: absolute;
 	top: 2px;
 	left: 6px;
+	cursor: pointer;
 }
 
 form input {

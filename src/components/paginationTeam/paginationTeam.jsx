@@ -6,14 +6,16 @@ export function PaginationTeam({ metaData, setCurrentPage }) {
 
   useEffect(() => {
     const arr = [];
-    for (let number = 0; number < metaData.total_pages; number++) {
-      arr.push(
-        <Pagination.Item key={number} active={number === metaData.current_page} onClick={()=>{
-          setCurrentPage(number)
-        }}>
-          {number + 1}
-        </Pagination.Item>
-      );
+    if(metaData.total_pages > 1) {
+      for (let number = 0; number < metaData.total_pages; number++) {
+        arr.push(
+          <Pagination.Item key={number} active={number === metaData.current_page} onClick={()=>{
+            setCurrentPage(number)
+          }}>
+            {number + 1}
+          </Pagination.Item>
+        );
+      }
     }
     setItems(arr);
   }, [metaData, setCurrentPage]);
