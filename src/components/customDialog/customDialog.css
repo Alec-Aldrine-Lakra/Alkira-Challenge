@@ -19,12 +19,12 @@
 	overflow-y: auto;
 	display: inline-block;
 }
-.modal-overlay .right {
-		justify-content: flex-end;
-		display: flex;
+.modal-overlay.right {
+	justify-content: flex-end;
+	display: flex;
 }
 
-.modal-overlay .center {
+.modal-overlay.center {
     display: flex;
     justify-content: center;
     align-items: center;
