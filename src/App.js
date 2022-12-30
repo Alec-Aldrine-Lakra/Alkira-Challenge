@@ -42,8 +42,8 @@ function App() {
         if (data.length && searchText) {
 		  const newData = data.filter((team) => {
 			return JSON.stringify(team).toLowerCase().includes(searchText.toLowerCase());
-		  }).slice(currentIndex, currentIndex + pageSize);
-		  setTeamList(newData);
+		  });
+		  setTeamList(newData.slice(currentIndex, currentIndex + pageSize));
 		  const total_pages = Math.ceil(newData.length / pageSize);
 		  setTeamMetaData({
 			total_pages,
