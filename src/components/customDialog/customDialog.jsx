@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import "./customDialog.css";
 import { CloseIcon } from "../icons/index";
 function CustomDialog({ isShowing, hide, direction, ...props }) {
-
 	return isShowing
 		? ReactDOM.createPortal(
 				<>
@@ -16,9 +15,7 @@ function CustomDialog({ isShowing, hide, direction, ...props }) {
 								className="modal-close-button"
 								onClick={hide}
 							>
-								<span>
-									<CloseIcon size="14px" />
-								</span>
+								<CloseIcon size="14px" />
 							</button>
 							{props.children}
 						</div>

@@ -25,7 +25,11 @@
 }
 
 .modal-overlay.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.modal-wrapper .card {
+	width: 665px;
+	height: 100vh;
 }
