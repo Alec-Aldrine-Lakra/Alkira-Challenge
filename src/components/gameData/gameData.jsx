@@ -1,4 +1,4 @@
-import { Card, Modal } from "react-bootstrap";
+import {  Modal } from "react-bootstrap";
 import { formatDate } from "../../utils/date.util";
 
 export function GameData({ nameDetails, gameData }) {

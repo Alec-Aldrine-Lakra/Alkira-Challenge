@@ -11,7 +11,7 @@ export function PaginationTeam({ metaData, setCurrentPage }) {
         <Pagination.Item key={number} active={number === metaData.current_page} onClick={()=>{
           setCurrentPage(number)
         }}>
-          {number}
+          {number + 1}
         </Pagination.Item>
       );
     }
