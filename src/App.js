@@ -21,16 +21,8 @@ function App() {
   });
   const [gameData, setGameData] = useState({});
   const { data: result } = useGetFetch("teams");
-
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const [showDialog, setShowDialog] = useState(false);
-
-  useEffect(() => {
-    if (typeof searchText === "string" && searchText.trim().length) {
-      // fetch()
-    }
-  }, [searchText]);
 
   useEffect(() => {
     document.title = "NBA Teams";
