@@ -1,1 +1,1 @@
-export const pageSize = 7;
+export const pageSize = process.env.REACT_APP_PAGE_SIZE || 7;

@@ -8,6 +8,7 @@ import { PaginationTeam } from "./components/paginationTeam/paginationTeam";
 import { GameData } from "./components/gameData/gameData";
 import { pageSize } from "./constants/index.constants";
 import { Modal } from "react-bootstrap";
+import {SearchIcon} from "./components/icons/index";
 
 function App() {
 	const [searchText, setSearchText] = useState("");
@@ -70,13 +71,13 @@ function App() {
 				<h1>NBA Teams</h1>
 			</header>
 			<form>
+				<span><SearchIcon height={14} width={14}/></span>
 				<DebounceInput
 					type="text"
 					value={searchText}
 					onChange={(e) => {
 						setSearchText(e.target.value);
 					}}
-					placeholder={`Search Movies`}
 					debounceTimeout={500}
 				/>
 			</form>
@@ -135,13 +136,6 @@ function App() {
 					>
 						<GameData nameDetails={nameDetails} gameData={gameData} />
 					</Modal>
-					{/* <CustomDialog
-						direction="right"
-						isShowing={showDialog}
-						hide={() => {
-							setShowDialog(!showDialog);
-						}}
-					></CustomDialog> */}
 				</div>
 			)}
 		</div>
